@@ -1,33 +1,53 @@
+@import "~antd/dist/antd.css";
+
 .App {
   text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
+.ant-layout-content > div {
+  padding: 0;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.logo {
+  width: 100px;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 16px 24px 16px 0;
+  float: left;
+  background-image: url("logo.png");
+  background-size: cover;
 }
 
-.App-link {
-  color: #61dafb;
+.ant-carousel .slick-slide {
+  text-align: center;
+  height: 160px;
+  line-height: 160px;
+  /* background: #364d79; */
+  overflow: hidden;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
+.ant-carousel .slick-slide h3 {
+  color: #364d79;
+}
+
+.slick-dots > li {
+  background-color: #00152a;
+}
+
+.ant-carousel .slick-dots li.slick-active button {
+  background-color: #c4c4c4;
+}
+
+.slick-dots > li > button {
+  min-width: 80px !important;
+  min-height: 10px;
+}
+
+@media screen and (max-width: 767px) {
+  .logo {
+    display: block;
+    margin: 10px auto;
+    float: unset;
+    width: 40%;
   }
 }
