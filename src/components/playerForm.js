@@ -2,6 +2,8 @@ import React from "react";
 
 import { Form, Input, Button } from "antd";
 
+import { addPlayer } from "../firebase/firebase";
+
 class PlayerForm extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
@@ -11,6 +13,13 @@ class PlayerForm extends React.Component {
         //send data to api and await response.
         //show spinner while waiting
         //after callback call onSumbit function
+        addPlayer(values.name)
+          .then(res => {
+            console.log("success");
+          })
+          .catch(error => {
+            console.log("error");
+          });
         this.props.onSubmit();
       }
     });
