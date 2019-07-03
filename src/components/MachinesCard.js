@@ -1,6 +1,7 @@
 import React from "react";
 import { Card } from "antd";
 import Machine from "./Machine";
+import NewestScores from "./newestScores";
 
 const tabListNoTitle = [
   {
@@ -10,12 +11,17 @@ const tabListNoTitle = [
   {
     key: "hook",
     tab: "Hook"
+  },
+  {
+    key: "nyeste",
+    tab: "Nyeste"
   }
 ];
 
 const contentListNoTitle = {
   goldenEye: <Machine name={"goldeneye"} />,
-  hook: <Machine name={"hook"} />
+  hook: <Machine name={"hook"} />,
+  nyeste: <NewestScores />
 };
 
 class MachinesCard extends React.Component {

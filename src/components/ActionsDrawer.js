@@ -2,6 +2,7 @@ import React from "react";
 
 import { Drawer, Icon, Affix } from "antd";
 import ScoreForm from "./scoreForm";
+import PlayerForm from "./playerForm";
 
 class ActionsDrawer extends React.Component {
   state = { scoreVisible: false, playerVisable: false };
@@ -35,9 +36,8 @@ class ActionsDrawer extends React.Component {
       <div>
         <Affix offsetBottom={30} style={{ position: "absolute", left: "20px" }}>
           <Icon
-            type="thunderbolt"
-            theme="twoTone"
-            style={{ fontSize: "30px" }}
+            type="plus"
+            style={{ fontSize: "30px", color: "#008DFF" }}
             onClick={this.showScoreDrawer}
           />
         </Affix>
@@ -60,7 +60,7 @@ class ActionsDrawer extends React.Component {
           height={"60vh"}
           destroyOnClose={true}
         >
-          <ScoreForm />
+          <ScoreForm onSubmit={this.onCloseScore} />
         </Drawer>
         <Drawer
           title="Ny spiller"
@@ -70,9 +70,7 @@ class ActionsDrawer extends React.Component {
           visible={this.state.playerVisable}
           destroyOnClose={true}
         >
-          <p>Some playercontent...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
+          <PlayerForm onSubmit={this.onClosePlayer} />
         </Drawer>
       </div>
     );

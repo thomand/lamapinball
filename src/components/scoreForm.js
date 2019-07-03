@@ -10,6 +10,10 @@ class ScoreForm extends React.Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log("Received values of form: ", values);
+        //send data to api and await response.
+        //show spinner while waiting
+        //after callback call onSumbit function
+        this.props.onSubmit();
       }
     });
   };
@@ -24,7 +28,7 @@ class ScoreForm extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-      <Form onSubmit={this.handleSubmit} className="login-form">
+      <Form onSubmit={this.handleSubmit} className="score-form">
         <h2>
           Score: {this.parseScore(this.props.form.getFieldValue("score"))}
         </h2>
@@ -65,11 +69,7 @@ class ScoreForm extends React.Component {
           })(<Input type="number" placeholder="Score" pattern="\d*" />)}
         </Form.Item>
         <Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            className="login-form-button"
-          >
+          <Button type="primary" htmlType="submit" className="score-reg-button">
             Registrer
           </Button>
         </Form.Item>
@@ -78,6 +78,6 @@ class ScoreForm extends React.Component {
   }
 }
 
-const WrappedForm = Form.create({ name: "normal_login" })(ScoreForm);
+const WrappedScoreForm = Form.create({ name: "score_registration" })(ScoreForm);
 
-export default WrappedForm;
+export default WrappedScoreForm;

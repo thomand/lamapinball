@@ -1,6 +1,6 @@
 import React from "react";
 import { Row, List } from "antd";
-import goldeneye from "../assets/goldeneye.jpg";
+import goldeneye from "../assets/goldeneye.png";
 import hook from "../assets/hook.png";
 
 const data = [
