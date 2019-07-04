@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, message } from "antd";
 
 import { addPlayer } from "../firebase/firebase";
 
@@ -15,12 +15,12 @@ class PlayerForm extends React.Component {
         //after callback call onSumbit function
         addPlayer(values.name)
           .then(res => {
-            console.log("success");
+            message.success("Spiller lagt til!");
+            this.props.onSubmit();
           })
           .catch(error => {
-            console.log("error");
+            message.error("Noe gikk galt under lagring av spiller!");
           });
-        this.props.onSubmit();
       }
     });
   };

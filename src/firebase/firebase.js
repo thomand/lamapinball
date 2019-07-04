@@ -18,11 +18,27 @@ export const getScoresDB = () => {
 export const getplayersDB = sectionId => {
   return database.ref(`/${sectionId}`).once("value");
 };
+
+export const getPlayers = () => {
+  return database.ref("/players/").once("value");
+};
 // add new player
 export const addPlayer = name => {
   let key = database.ref("/players/").push().key;
   let model = playerModel(key, name);
   return database.ref("/players/" + key).set(model);
+};
+
+export const addScore = scoreObject => {
+  let key = database.ref("scores/" + scoreObject.machine).push().key;
+  let model = scoreModel(
+    key,
+    scoreObject.player,
+    scoreObject.machine,
+    scoreObject.score,
+    new Date().getTime()
+  );
+  return database.ref("/scores/" + model.machine + "/" + key).set(model);
 };
 //   // add new todo item into specified section
 //   export const addTodoItem = (id, name) => {
