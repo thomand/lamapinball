@@ -14,6 +14,11 @@ export const init = () => {
 export const getScoresDB = () => {
   return database.ref("/scores").once("value");
 };
+
+export const getscores = machine => {
+  return database.ref("/scores/" + machine).once("value");
+};
+
 // get specified section
 export const getplayersDB = sectionId => {
   return database.ref(`/${sectionId}`).once("value");

@@ -2,6 +2,8 @@ import React from "react";
 import { Card } from "antd";
 import Machine from "./Machine";
 import NewestScores from "./newestScores";
+import goldeneye from "../assets/goldeneye.png";
+import hook from "../assets/hook.png";
 
 const tabListNoTitle = [
   {
@@ -19,8 +21,8 @@ const tabListNoTitle = [
 ];
 
 const contentListNoTitle = {
-  goldenEye: <Machine name={"goldeneye"} />,
-  hook: <Machine name={"hook"} />,
+  goldenEye: <Machine name={"goldeneye"} image={goldeneye} />,
+  hook: <Machine name={"hook"} image={hook} />,
   nyeste: <NewestScores />
 };
 

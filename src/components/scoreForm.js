@@ -2,12 +2,14 @@ import React from "react";
 import { Form, Input, Button, Select } from "antd";
 import { getPlayers, addScore } from "../firebase/firebase";
 import { message } from "antd";
-const { Option } = Select;
 
 class ScoreForm extends React.Component {
   state = {
     players: [],
-    machines: [{ name: "Golden Eye", id: 1 }, { name: "Hook", id: 2 }]
+    machines: [
+      { name: "Golden Eye", key: "goldeneye", id: 1 },
+      { name: "Hook", key: "hook", id: 2 }
+    ]
   };
 
   componentWillMount() {
@@ -29,7 +31,8 @@ class ScoreForm extends React.Component {
         console.log("Received values of form: ", values);
         let scoreObject = {
           player: values.player,
-          machine: values.machine,
+          machine: this.state.machines.filter(x => x.name === values.machine)[0]
+            .key,
           score: values.score
         };
         addScore(scoreObject)
@@ -77,7 +80,7 @@ class ScoreForm extends React.Component {
           })(
             <Select placeholder="Maskin">
               {this.state.machines.map(machine => (
-                <Select.Option key={machine.id} value={machine.name}>
+                <Select.Option key={machine.key} value={machine.name}>
                   {machine.name}
                 </Select.Option>
               ))}
