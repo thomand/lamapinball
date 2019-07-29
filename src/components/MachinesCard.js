@@ -44,7 +44,7 @@ class MachinesCard extends React.Component {
         image={hook}
       />
     ),
-    nyeste: <NewestScores />
+    nyeste: <NewestScores dataLoaded={this.dataLoaded.bind(this)} />
   };
 
   onTabChange = (key, type) => {

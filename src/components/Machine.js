@@ -16,7 +16,6 @@ class Machine extends React.Component {
       x.forEach(child => {
         scoresArray.push(child.val());
       });
-      //const scoresArray = Object.values(x.val());
       const sortedArray = this.sortArrayByScores(scoresArray);
       this.setState({ scores: sortedArray });
       this.props.dataLoaded();

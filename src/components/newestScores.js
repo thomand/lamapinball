@@ -1,123 +1,138 @@
 import React from "react";
+import { List } from "antd";
+import { getNewestHook, getNewestGoldenEye } from "../firebase/firebase";
+import goldeneyeImg from "../assets/goldeneye.png";
+import hookImg from "../assets/hook.png";
+import { Row, Col, Button } from "antd";
 
 class NewestScores extends React.Component {
+  state = {
+    scores: []
+  };
+  componentWillMount() {
+    this.updateScores();
+  }
+
+  updateScores() {
+    let scoresArray = [];
+    getNewestGoldenEye()
+      .then(golden => {
+        golden.forEach(gChild => {
+          gChild.image = goldeneyeImg;
+          scoresArray.push(gChild.val());
+        });
+      })
+      .finally(y => {
+        getNewestHook().then(hook => {
+          hook.forEach(hChild => {
+            hChild.image = hookImg;
+            scoresArray.push(hChild.val());
+          });
+          let sortedArray = this.sortArrayByTimestamp(scoresArray);
+          this.setState({ scores: sortedArray });
+          this.props.dataLoaded();
+        });
+      });
+  }
+
+  sortArrayByTimestamp(scores) {
+    return scores.sort((a, b) =>
+      parseInt(b.timestamp) > parseInt(a.timestamp) ? 1 : -1
+    );
+  }
+
+  timeDifference(previous) {
+    const current = new Date().getTime();
+    const msPerMinute = 60 * 1000;
+    const msPerHour = msPerMinute * 60;
+    const msPerDay = msPerHour * 24;
+    const msPerMonth = msPerDay * 30;
+    const msPerYear = msPerDay * 365;
+
+    const elapsed = current - previous;
+
+    if (elapsed < msPerMinute) {
+      return Math.round(elapsed / 1000) + " sekunder siden";
+    } else if (elapsed < msPerHour) {
+      return (
+        Math.round(elapsed / msPerMinute) +
+        (Math.round(elapsed / msPerMinute) === 1 ? " minutt" : " minutter") +
+        " siden"
+      );
+    } else if (elapsed < msPerDay) {
+      return (
+        Math.round(elapsed / msPerHour) +
+        (Math.round(elapsed / msPerHour) === 1 ? " time" : " timer") +
+        " siden"
+      );
+    } else if (elapsed < msPerMonth) {
+      return (
+        "ca " +
+        Math.round(elapsed / msPerDay) +
+        (Math.round(elapsed / msPerDay) === 1 ? " dag" : " dager") +
+        " siden"
+      );
+    } else if (elapsed < msPerYear) {
+      return (
+        "ca " +
+        Math.round(elapsed / msPerMonth) +
+        (Math.round(elapsed / msPerMonth) === 1 ? " måned" : " måneder") +
+        " siden"
+      );
+    } else {
+      return "ca " + Math.round(elapsed / msPerYear) + " år siden";
+    }
+  }
+
+  parseScore(score) {
+    return score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   render() {
     return (
       <div>
-        Her kommer de siste scores'a med mulighet for redigering og sletting
+        <List
+          itemLayout="horizontal"
+          dataSource={this.state.scores}
+          renderItem={item => (
+            <List.Item>
+              <Row>
+                <Col span={6}>
+                  <img
+                    width={"120%"}
+                    height={"100px"}
+                    alt="maskin"
+                    src={item.machine === "hook" ? hookImg : goldeneyeImg}
+                  />
+                </Col>
+                <Col span={14} offset={4}>
+                  <List.Item.Meta
+                    key={item.key}
+                    title={
+                      <div>
+                        <p>{item.player}</p>
+                        <p>{this.parseScore(item.score)}</p>
+                      </div>
+                    }
+                    description={this.timeDifference(item.timestamp)}
+                  />
+                </Col>
+              </Row>
+              <Row style={{ marginTop: "10px" }}>
+                <Button
+                  type="primary"
+                  icon="edit"
+                  size={"medium"}
+                  style={{ marginRight: "30px" }}
+                />
+                <Button type="primary" icon="delete" size={"medium"} />
+              </Row>
+            </List.Item>
+          )}
+        />
       </div>
     );
   }
 }
 
 export default NewestScores;
-
-// import { List, Avatar, Button, Skeleton } from "antd";
-
-// import reqwest from "reqwest";
-
-// const count = 3;
-// const fakeDataUrl = `https://randomuser.me/api/?results=${count}&inc=name,gender,email,nat&noinfo`;
-
-// class NewestScores extends React.Component {
-//   state = {
-//     initLoading: true,
-//     loading: false,
-//     data: [],
-//     list: []
-//   };
-
-//   componentDidMount() {
-//     this.getData(res => {
-//       this.setState({
-//         initLoading: false,
-//         data: res.results,
-//         list: res.results
-//       });
-//     });
-//   }
-
-//   getData = callback => {
-//     reqwest({
-//       url: fakeDataUrl,
-//       type: "json",
-//       method: "get",
-//       contentType: "application/json",
-//       success: res => {
-//         callback(res);
-//       }
-//     });
-//   };
-
-//   onLoadMore = () => {
-//     this.setState({
-//       loading: true,
-//       list: this.state.data.concat(
-//         [...new Array(count)].map(() => ({ loading: true, name: {} }))
-//       )
-//     });
-//     this.getData(res => {
-//       const data = this.state.data.concat(res.results);
-//       this.setState(
-//         {
-//           data,
-//           list: data,
-//           loading: false
-//         },
-//         () => {
-//           // Resetting window's offsetTop so as to display react-virtualized demo underfloor.
-//           // In real scene, you can using public method of react-virtualized:
-//           // https://stackoverflow.com/questions/46700726/how-to-use-public-method-updateposition-of-react-virtualized
-//           window.dispatchEvent(new Event("resize"));
-//         }
-//       );
-//     });
-//   };
-
-//   render() {
-//     const { initLoading, loading, list } = this.state;
-//     const loadMore =
-//       !initLoading && !loading ? (
-//         <div
-//           style={{
-//             textAlign: "center",
-//             marginTop: 12,
-//             height: 32,
-//             lineHeight: "32px"
-//           }}
-//         >
-//           <Button onClick={this.onLoadMore}>loading more</Button>
-//         </div>
-//       ) : null;
-
-//     return (
-//       <List
-//         className="demo-loadmore-list"
-//         loading={initLoading}
-//         itemLayout="horizontal"
-//         loadMore={loadMore}
-//         dataSource={list}
-//         renderItem={item => (
-//           <List.Item actions={[<a>edit</a>, <a>more</a>]}>
-//             <Skeleton avatar title={false} loading={item.loading} active>
-//               <List.Item.Meta
-//                 avatar={
-//                   <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-//                 }
-//                 title={<a href="https://ant.design">{item.name.last}</a>}
-//                 description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-//               />
-//               <div>content</div>
-//             </Skeleton>
-//           </List.Item>
-//         )}
-//       />
-//     );
-//   }
-// }
-
-// function parseScore(score) {
-//   return score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-// }
-
-// export default NewestScores;

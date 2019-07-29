@@ -1,4 +1,5 @@
-import * as firebase from "firebase";
+import * as firebase from "firebase/app";
+import "firebase/database";
 import config from "./firebaseconfig";
 import scoreModel from "../models/score";
 import playerModel from "../models/player";
@@ -36,6 +37,24 @@ export const addPlayer = name => {
   let key = database.ref("/players/").push().key;
   let model = playerModel(key, name);
   return database.ref("/players/" + key).set(model);
+};
+
+export const getNewestGoldenEye = () => {
+  return database
+    .ref("scores")
+    .child("goldeneye")
+    .orderByChild("dateAdded")
+    .limitToLast(5)
+    .once("value");
+};
+
+export const getNewestHook = () => {
+  return database
+    .ref("scores")
+    .child("hook")
+    .orderByChild("dateAdded")
+    .limitToLast(5)
+    .once("value");
 };
 
 export const addScore = scoreObject => {
