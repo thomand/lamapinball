@@ -1,5 +1,5 @@
 import React from "react";
-import { Card } from "antd";
+import { Card, Spin, Icon } from "antd";
 import Machine from "./Machine";
 import NewestScores from "./newestScores";
 import goldeneye from "../assets/goldeneye.png";
@@ -20,21 +20,40 @@ const tabListNoTitle = [
   }
 ];
 
-const contentListNoTitle = {
-  goldenEye: <Machine name={"goldeneye"} image={goldeneye} />,
-  hook: <Machine name={"hook"} image={hook} />,
-  nyeste: <NewestScores />
-};
-
 class MachinesCard extends React.Component {
   state = {
     key: "goldenEye",
-    noTitleKey: "goldenEye"
+    noTitleKey: "goldenEye",
+    spinning: true
+  };
+
+  contentListNoTitle = {
+    goldenEye: (
+      <Machine
+        key={"goldeneye"}
+        name={"goldeneye"}
+        dataLoaded={this.dataLoaded.bind(this)}
+        image={goldeneye}
+      />
+    ),
+    hook: (
+      <Machine
+        key={"hook"}
+        name={"hook"}
+        dataLoaded={this.dataLoaded.bind(this)}
+        image={hook}
+      />
+    ),
+    nyeste: <NewestScores />
   };
 
   onTabChange = (key, type) => {
-    this.setState({ [type]: key });
+    this.setState({ [type]: key, spinning: true });
   };
+
+  dataLoaded() {
+    this.setState({ spinning: false });
+  }
 
   render() {
     return (
@@ -47,8 +66,13 @@ class MachinesCard extends React.Component {
             this.onTabChange(key, "noTitleKey");
           }}
         >
-          {contentListNoTitle[this.state.noTitleKey]}
+          {this.contentListNoTitle[this.state.noTitleKey]}
         </Card>
+
+        <Spin
+          spinning={this.state.spinning}
+          indicator={<Icon type="loading" style={{ fontSize: 36 }} spin />}
+        />
       </div>
     );
   }

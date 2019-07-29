@@ -1,11 +1,16 @@
 import React from "react";
 
-import { Form, Input, Button, message } from "antd";
+import { Form, Input, Button, message, Spin, Icon } from "antd";
 
 import { addPlayer } from "../firebase/firebase";
 
 class PlayerForm extends React.Component {
+  state = {
+    spinning: false
+  };
+
   handleSubmit = e => {
+    this.setState({ spinning: true });
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
@@ -20,6 +25,9 @@ class PlayerForm extends React.Component {
           })
           .catch(error => {
             message.error("Noe gikk galt under lagring av spiller!");
+          })
+          .finally(x => {
+            this.setState({ spinning: false });
           });
       }
     });
@@ -35,23 +43,29 @@ class PlayerForm extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-      <Form onSubmit={this.handleSubmit} className="player-form">
-        <Form.Item>
-          {getFieldDecorator("name", {
-            rules: [{ required: true, message: "Vennligst skriv inn navn!" }]
-          })(<Input type="text" placeholder="Navn" />)}
-        </Form.Item>
-        <Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            className="player-reg-button"
-            disabled={this.nameFieldIsEmpty()}
-          >
-            Registrer
-          </Button>
-        </Form.Item>
-      </Form>
+      <div>
+        <Form onSubmit={this.handleSubmit} className="player-form">
+          <Form.Item>
+            {getFieldDecorator("name", {
+              rules: [{ required: true, message: "Vennligst skriv inn navn!" }]
+            })(<Input type="text" placeholder="Navn" />)}
+          </Form.Item>
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="player-reg-button"
+              disabled={this.nameFieldIsEmpty()}
+            >
+              Registrer
+            </Button>
+          </Form.Item>
+        </Form>
+        <Spin
+          spinning={this.state.spinning}
+          indicator={<Icon type="loading" style={{ fontSize: 36 }} spin />}
+        />
+      </div>
     );
   }
 }

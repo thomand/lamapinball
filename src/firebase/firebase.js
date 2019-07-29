@@ -16,7 +16,11 @@ export const getScoresDB = () => {
 };
 
 export const getscores = machine => {
-  return database.ref("/scores/" + machine).once("value");
+  return database
+    .ref("/scores/" + machine)
+    .orderByChild("score")
+    .limitToLast(5)
+    .once("value");
 };
 
 // get specified section

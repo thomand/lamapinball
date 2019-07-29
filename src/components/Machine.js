@@ -1,45 +1,25 @@
 import React from "react";
 import { Row, List } from "antd";
 import { getscores } from "../firebase/firebase";
-// const data = [
-//   {
-//     player: "LAMA",
-//     score: 123456789
-//   },
-//   {
-//     player: "Thomas",
-//     score: 113456789
-//   },
-//   {
-//     player: "Ole",
-//     score: 103456789
-//   },
-//   {
-//     player: "OK",
-//     score: 23456789
-//   },
-//   {
-//     player: "Sivert",
-//     score: 13456789
-//   }
-// ];
 
 class Machine extends React.Component {
   state = {
     scores: []
   };
   componentWillMount() {
-    getscores(this.props.name).then(x => {
-      const scoresArray = Object.values(x.val());
-      const sortedArray = this.sortArrayByScores(scoresArray);
-      this.setState({ scores: sortedArray });
-    });
+    this.updateScores();
   }
-  componentDidUpdate() {
+
+  updateScores() {
     getscores(this.props.name).then(x => {
-      const scoresArray = Object.values(x.val());
+      let scoresArray = [];
+      x.forEach(child => {
+        scoresArray.push(child.val());
+      });
+      //const scoresArray = Object.values(x.val());
       const sortedArray = this.sortArrayByScores(scoresArray);
       this.setState({ scores: sortedArray });
+      this.props.dataLoaded();
     });
   }
 
@@ -76,6 +56,7 @@ class Machine extends React.Component {
           renderItem={item => (
             <List.Item>
               <List.Item.Meta
+                key={item.key}
                 title={<p>{item.player}</p>}
                 description={this.parseScore(item.score)}
               />

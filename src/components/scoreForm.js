@@ -1,11 +1,12 @@
 import React from "react";
-import { Form, Input, Button, Select } from "antd";
+import { Form, Input, Button, Select, Spin, Icon } from "antd";
 import { getPlayers, addScore } from "../firebase/firebase";
 import { message } from "antd";
 
 class ScoreForm extends React.Component {
   state = {
     players: [],
+    spinning: false,
     machines: [
       { name: "Golden Eye", key: "goldeneye", id: 1 },
       { name: "Hook", key: "hook", id: 2 }
@@ -25,6 +26,7 @@ class ScoreForm extends React.Component {
   }
 
   handleSubmit = e => {
+    this.setState({ spinning: true });
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
@@ -42,6 +44,9 @@ class ScoreForm extends React.Component {
           })
           .error(error => {
             message.error("Noe gikk galt under lagring av score!");
+          })
+          .finally(x => {
+            this.setState({ spinning: false });
           });
         //send data to api and await response.
         //show spinner while waiting
@@ -70,52 +75,58 @@ class ScoreForm extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-      <Form onSubmit={this.handleSubmit} className="score-form">
-        <h2>
-          Score: {this.parseScore(this.props.form.getFieldValue("score"))}
-        </h2>
-        <Form.Item>
-          {getFieldDecorator("machine", {
-            rules: [{ required: true, message: "Vennligst velg maskin!" }]
-          })(
-            <Select placeholder="Maskin">
-              {this.state.machines.map(machine => (
-                <Select.Option key={machine.key} value={machine.name}>
-                  {machine.name}
-                </Select.Option>
-              ))}
-            </Select>
-          )}
-        </Form.Item>
-        <Form.Item>
-          {getFieldDecorator("player", {
-            rules: [{ required: true, message: "Vennligst velg spiller!" }]
-          })(
-            <Select placeholder="Spiller">
-              {this.state.players.map(player => (
-                <Select.Option key={player.id} value={player.name}>
-                  {player.name}
-                </Select.Option>
-              ))}
-            </Select>
-          )}
-        </Form.Item>
-        <Form.Item>
-          {getFieldDecorator("score", {
-            rules: [{ required: true, message: "Vennligst skriv inn score!" }]
-          })(<Input type="number" placeholder="Score" pattern="\d*" />)}
-        </Form.Item>
-        <Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            className="score-reg-button"
-            disabled={!this.formIsValid()}
-          >
-            Registrer
-          </Button>
-        </Form.Item>
-      </Form>
+      <div>
+        <Form onSubmit={this.handleSubmit} className="score-form">
+          <h2>
+            Score: {this.parseScore(this.props.form.getFieldValue("score"))}
+          </h2>
+          <Form.Item>
+            {getFieldDecorator("machine", {
+              rules: [{ required: true, message: "Vennligst velg maskin!" }]
+            })(
+              <Select placeholder="Maskin">
+                {this.state.machines.map(machine => (
+                  <Select.Option key={machine.key} value={machine.name}>
+                    {machine.name}
+                  </Select.Option>
+                ))}
+              </Select>
+            )}
+          </Form.Item>
+          <Form.Item>
+            {getFieldDecorator("player", {
+              rules: [{ required: true, message: "Vennligst velg spiller!" }]
+            })(
+              <Select placeholder="Spiller">
+                {this.state.players.map(player => (
+                  <Select.Option key={player.id} value={player.name}>
+                    {player.name}
+                  </Select.Option>
+                ))}
+              </Select>
+            )}
+          </Form.Item>
+          <Form.Item>
+            {getFieldDecorator("score", {
+              rules: [{ required: true, message: "Vennligst skriv inn score!" }]
+            })(<Input type="number" placeholder="Score" pattern="\d*" />)}
+          </Form.Item>
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="score-reg-button"
+              disabled={!this.formIsValid()}
+            >
+              Registrer
+            </Button>
+          </Form.Item>
+        </Form>
+        <Spin
+          spinning={this.state.spinning}
+          indicator={<Icon type="loading" style={{ fontSize: 36 }} spin />}
+        />
+      </div>
     );
   }
 }
