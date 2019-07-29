@@ -4,10 +4,13 @@ import { getNewestHook, getNewestGoldenEye } from "../firebase/firebase";
 import goldeneyeImg from "../assets/goldeneye.png";
 import hookImg from "../assets/hook.png";
 import { Row, Col, Button } from "antd";
+import DeleteScoreDrawer from "./DeleteScoreDrawer";
 
 class NewestScores extends React.Component {
   state = {
-    scores: []
+    scores: [],
+    deleteVisible: false,
+    selectedItem: {}
   };
   componentWillMount() {
     this.updateScores();
@@ -88,6 +91,18 @@ class NewestScores extends React.Component {
     return score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
+  deleteClicked(item) {
+    this.setState({
+      selectedItem: item,
+      deleteVisible: true
+    });
+  }
+
+  onCloseDelete = () => {
+    this.setState({ deleteVisible: false });
+    this.updateScores();
+  };
+
   render() {
     return (
       <div>
@@ -122,13 +137,18 @@ class NewestScores extends React.Component {
                 <Button
                   type="primary"
                   icon="edit"
-                  size={"medium"}
                   style={{ marginRight: "30px" }}
+                  onClick={this.deleteClicked.bind(this, item)}
                 />
-                <Button type="primary" icon="delete" size={"medium"} />
+                <Button type="primary" icon="delete" />
               </Row>
             </List.Item>
           )}
+        />
+        <DeleteScoreDrawer
+          visible={this.state.deleteVisible}
+          item={this.state.selectedItem}
+          onCloseDelete={this.onCloseDelete}
         />
       </div>
     );

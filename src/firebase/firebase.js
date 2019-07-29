@@ -68,6 +68,12 @@ export const addScore = scoreObject => {
   );
   return database.ref("/scores/" + model.machine + "/" + key).set(model);
 };
+
+export const deleteScore = item => {
+  const machine = item.machine;
+  const key = item.id;
+  return database.ref("/scores/" + machine + "/" + key).remove();
+};
 //   // add new todo item into specified section
 //   export const addTodoItem = (id, name) => {
 //     return new Promise((resolve, reject) => {
