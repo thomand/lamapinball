@@ -5,11 +5,14 @@ import goldeneyeImg from "../assets/goldeneye.png";
 import hookImg from "../assets/hook.png";
 import { Row, Col, Button } from "antd";
 import DeleteScoreDrawer from "./DeleteScoreDrawer";
+import parseScore from "./helpers/scoreHelper";
+import UpdateScoreDrawer from "./UpdateScoreDrawer";
 
 class NewestScores extends React.Component {
   state = {
     scores: [],
     deleteVisible: false,
+    updateVisible: false,
     selectedItem: {}
   };
   componentWillMount() {
@@ -87,10 +90,6 @@ class NewestScores extends React.Component {
     }
   }
 
-  parseScore(score) {
-    return score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }
-
   deleteClicked(item) {
     this.setState({
       selectedItem: item,
@@ -98,8 +97,20 @@ class NewestScores extends React.Component {
     });
   }
 
+  updateClicked(item) {
+    this.setState({
+      selectedItem: item,
+      updateVisible: true
+    });
+  }
+
   onCloseDelete = () => {
     this.setState({ deleteVisible: false });
+    this.updateScores();
+  };
+
+  onCloseUpdate = () => {
+    this.setState({ updateVisible: false });
     this.updateScores();
   };
 
@@ -126,7 +137,7 @@ class NewestScores extends React.Component {
                     title={
                       <div>
                         <p>{item.player}</p>
-                        <p>{this.parseScore(item.score)}</p>
+                        <p>{parseScore(item.score)}</p>
                       </div>
                     }
                     description={this.timeDifference(item.timestamp)}
@@ -138,9 +149,13 @@ class NewestScores extends React.Component {
                   type="primary"
                   icon="edit"
                   style={{ marginRight: "30px" }}
+                  onClick={this.updateClicked.bind(this, item)}
+                />
+                <Button
+                  type="primary"
+                  icon="delete"
                   onClick={this.deleteClicked.bind(this, item)}
                 />
-                <Button type="primary" icon="delete" />
               </Row>
             </List.Item>
           )}
@@ -149,6 +164,11 @@ class NewestScores extends React.Component {
           visible={this.state.deleteVisible}
           item={this.state.selectedItem}
           onCloseDelete={this.onCloseDelete}
+        />
+        <UpdateScoreDrawer
+          visible={this.state.updateVisible}
+          item={this.state.selectedItem}
+          onCloseUpdate={this.onCloseUpdate}
         />
       </div>
     );

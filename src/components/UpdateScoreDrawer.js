@@ -1,23 +1,23 @@
 import React from "react";
 import { Drawer } from "antd";
-import DeleteScoreForm from "./DeleteScoreForm";
+import UpdateScoreForm from "./UpdateScoreForm";
 
-class DeleteScoreDrawer extends React.Component {
+class UpdateScoreDrawer extends React.Component {
   render() {
     return (
       <div>
         <Drawer
-          title="Slett score"
+          title="Oppdater score"
           placement={"bottom"}
           closable={true}
-          onClose={this.props.onCloseDelete}
+          onClose={this.props.onCloseUpdate}
           visible={this.props.visible}
-          height={"30%"}
+          height={"50%"}
           destroyOnClose={true}
         >
-          <DeleteScoreForm
+          <UpdateScoreForm
             item={this.props.item}
-            onDeleted={this.props.onCloseDelete}
+            onUpdated={this.props.onCloseUpdate}
           />
         </Drawer>
       </div>
@@ -25,4 +25,4 @@ class DeleteScoreDrawer extends React.Component {
   }
 }
 
-export default DeleteScoreDrawer;
+export default UpdateScoreDrawer;

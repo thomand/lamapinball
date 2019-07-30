@@ -1,7 +1,7 @@
 import React from "react";
-import { Form, Input, Button, Select, Spin, Icon } from "antd";
+import { Form, Input, Button, Select, Spin, Icon, message } from "antd";
 import { getPlayers, addScore } from "../firebase/firebase";
-import { message } from "antd";
+import { parseScore } from "./helpers/scoreHelper";
 
 class ScoreForm extends React.Component {
   state = {
@@ -30,12 +30,11 @@ class ScoreForm extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log("Received values of form: ", values);
         let scoreObject = {
           player: values.player,
           machine: this.state.machines.filter(x => x.name === values.machine)[0]
             .key,
-          score: values.score
+          score: parseInt(values.score)
         };
         addScore(scoreObject)
           .then(success => {
@@ -48,20 +47,10 @@ class ScoreForm extends React.Component {
           .finally(x => {
             this.setState({ spinning: false });
           });
-        //send data to api and await response.
-        //show spinner while waiting
-        //after callback call onSumbit function
         this.props.onSubmit();
       }
     });
   };
-
-  parseScore(score) {
-    if (score !== undefined) {
-      return score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    }
-    return;
-  }
 
   formIsValid() {
     const score =
@@ -77,9 +66,7 @@ class ScoreForm extends React.Component {
     return (
       <div>
         <Form onSubmit={this.handleSubmit} className="score-form">
-          <h2>
-            Score: {this.parseScore(this.props.form.getFieldValue("score"))}
-          </h2>
+          <h2>Score: {parseScore(this.props.form.getFieldValue("score"))}</h2>
           <Form.Item>
             {getFieldDecorator("machine", {
               rules: [{ required: true, message: "Vennligst velg maskin!" }]

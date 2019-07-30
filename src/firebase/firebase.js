@@ -10,8 +10,6 @@ export const init = () => {
   database = firebase.database();
 };
 
-// retrieve from firebase
-// return promise object
 export const getScoresDB = () => {
   return database.ref("/scores").once("value");
 };
@@ -20,11 +18,9 @@ export const getscores = machine => {
   return database
     .ref("/scores/" + machine)
     .orderByChild("score")
-    .limitToLast(5)
-    .once("value");
+    .limitToLast(5);
 };
 
-// get specified section
 export const getplayersDB = sectionId => {
   return database.ref(`/${sectionId}`).once("value");
 };
@@ -32,7 +28,7 @@ export const getplayersDB = sectionId => {
 export const getPlayers = () => {
   return database.ref("/players/").once("value");
 };
-// add new player
+
 export const addPlayer = name => {
   let key = database.ref("/players/").push().key;
   let model = playerModel(key, name);
@@ -74,17 +70,16 @@ export const deleteScore = item => {
   const key = item.id;
   return database.ref("/scores/" + machine + "/" + key).remove();
 };
-//   // add new todo item into specified section
-//   export const addTodoItem = (id, name) => {
-//     return new Promise((resolve, reject) => {
-//       database.ref(`/${id}`).once('value').then((todo) => {
-//         let todos = todo.val().todos
-//         []
-//         let key = database.ref(`/${id}`).push().key
-//         todos.push(todoModel(key, name, firebase.database.ServerValue.TIMESTAMP))
-//         database.ref(`/${id}/todos`).set(todos)
-//           .then( res => {resolve(res)})
-//           .catch( error => {reject(error)})
-//       })
-//     })
-//   }
+
+export const updateScore = scoreObject => {
+  let model = scoreModel(
+    scoreObject.id,
+    scoreObject.player,
+    scoreObject.machine,
+    scoreObject.score,
+    scoreObject.timestamp
+  );
+  return database
+    .ref("/scores/" + model.machine + "/" + model.id)
+    .update(model);
+};

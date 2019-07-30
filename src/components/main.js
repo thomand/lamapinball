@@ -1,7 +1,6 @@
 import React from "react";
 import { Layout } from "antd";
 import MachinesCard from "./MachinesCard";
-import ActionsDrawer from "./ActionsDrawer";
 import { init as firebaseInit } from "../firebase/firebase";
 
 const { Header, Content } = Layout;
@@ -36,7 +35,6 @@ class Main extends React.Component {
           >
             <MachinesCard />
           </div>
-          <ActionsDrawer />
         </Content>
       </Layout>
     );

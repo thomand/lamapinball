@@ -1,10 +1,9 @@
 import React from "react";
-
-import { Form, Button, message, Spin, Icon, Row, Col } from "antd";
-
+import { Button, message, Row, Col } from "antd";
 import goldeneyeImg from "../assets/goldeneye.png";
 import hookImg from "../assets/hook.png";
 import { deleteScore } from "../firebase/firebase";
+import { parseScore } from "./helpers/scoreHelper";
 
 class DeleteScoreForm extends React.Component {
   state = {
@@ -28,10 +27,6 @@ class DeleteScoreForm extends React.Component {
       });
   };
 
-  parseScore(score) {
-    return score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }
-
   render() {
     return (
       <div>
@@ -46,7 +41,7 @@ class DeleteScoreForm extends React.Component {
           </Col>
           <Col span={12} offset={2}>
             <h3>{this.props.item.player}</h3>
-            <h4>{this.parseScore(this.props.item.score)}</h4>
+            <h4>{parseScore(this.props.item.score)}</h4>
           </Col>
         </Row>
         <Button
@@ -63,6 +58,4 @@ class DeleteScoreForm extends React.Component {
   }
 }
 
-const WrappedForm = Form.create({ name: "delete_score" })(DeleteScoreForm);
-
-export default WrappedForm;
+export default DeleteScoreForm;

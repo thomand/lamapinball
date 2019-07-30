@@ -1,35 +1,26 @@
 import React from "react";
 import { Row, List } from "antd";
 import { getscores } from "../firebase/firebase";
+import { parseScore, sortArrayByScores } from "./helpers/scoreHelper";
 
 class Machine extends React.Component {
   state = {
     scores: []
   };
+
   componentWillMount() {
     this.updateScores();
   }
 
   updateScores() {
-    getscores(this.props.name).then(x => {
-      let scoresArray = [];
-      x.forEach(child => {
-        scoresArray.push(child.val());
-      });
-      const sortedArray = this.sortArrayByScores(scoresArray);
+    let scoresArray = [];
+    getscores(this.props.name).on("value", snapshot => {
+      let scores = snapshot.val();
+      scoresArray = Object.values(scores);
+      const sortedArray = sortArrayByScores(scoresArray);
       this.setState({ scores: sortedArray });
       this.props.dataLoaded();
     });
-  }
-
-  sortArrayByScores(scores) {
-    return scores.sort((a, b) =>
-      parseInt(b.score) > parseInt(a.score) ? 1 : -1
-    );
-  }
-
-  parseScore(score) {
-    return score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
   render() {
@@ -57,7 +48,7 @@ class Machine extends React.Component {
               <List.Item.Meta
                 key={item.key}
                 title={<p>{item.player}</p>}
-                description={this.parseScore(item.score)}
+                description={parseScore(item.score)}
               />
             </List.Item>
           )}

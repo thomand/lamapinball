@@ -17,6 +17,7 @@ class ActionsDrawer extends React.Component {
     this.setState({
       scoreVisible: false
     });
+    this.props.refresh();
   };
 
   showPlayerDrawer = () => {
@@ -29,6 +30,7 @@ class ActionsDrawer extends React.Component {
     this.setState({
       playerVisable: false
     });
+    this.props.refresh();
   };
 
   render() {
