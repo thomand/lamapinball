@@ -49,13 +49,13 @@ class UpdateScoreForm extends React.Component {
             />
           </Col>
           <Col span={12} offset={2}>
-            <h3>{this.props.item.player}</h3>
+            <h2>{this.props.item.player}</h2>
             <h4>Gammel score: {parseScore(this.props.item.score)}</h4>
-            <h4>
-              Ny score: {parseScore(this.props.form.getFieldValue("score"))}
-            </h4>
           </Col>
         </Row>
+        <h4 style={{ marginTop: "10px" }}>
+          Ny score: {parseScore(this.props.form.getFieldValue("score"))}
+        </h4>
 
         <Form onSubmit={e => e.preventDefault()} className="update-score-form">
           <Form.Item>

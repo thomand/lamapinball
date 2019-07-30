@@ -125,8 +125,8 @@ class NewestScores extends React.Component {
               <Row>
                 <Col span={6}>
                   <img
-                    width={"120%"}
-                    height={"100px"}
+                    width={"160%"}
+                    height={"140px"}
                     alt="maskin"
                     src={item.machine === "hook" ? hookImg : goldeneyeImg}
                   />
@@ -142,20 +142,20 @@ class NewestScores extends React.Component {
                     }
                     description={this.timeDifference(item.timestamp)}
                   />
+                  <div style={{ marginTop: "10px" }}>
+                    <Button
+                      type="primary"
+                      icon="edit"
+                      style={{ marginRight: "30px" }}
+                      onClick={this.updateClicked.bind(this, item)}
+                    />
+                    <Button
+                      type="danger"
+                      icon="delete"
+                      onClick={this.deleteClicked.bind(this, item)}
+                    />
+                  </div>
                 </Col>
-              </Row>
-              <Row style={{ marginTop: "10px" }}>
-                <Button
-                  type="primary"
-                  icon="edit"
-                  style={{ marginRight: "30px" }}
-                  onClick={this.updateClicked.bind(this, item)}
-                />
-                <Button
-                  type="primary"
-                  icon="delete"
-                  onClick={this.deleteClicked.bind(this, item)}
-                />
               </Row>
             </List.Item>
           )}
