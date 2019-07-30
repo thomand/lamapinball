@@ -40,7 +40,8 @@ class ActionsDrawer extends React.Component {
             fontSize: "32px",
             color: "#ffffff",
             position: "absolute",
-            left: "20px"
+            left: "20px",
+            top: 30
           }}
           onClick={this.showScoreDrawer}
         />
@@ -51,12 +52,13 @@ class ActionsDrawer extends React.Component {
             fontSize: "32px",
             color: "#ffffff",
             position: "absolute",
-            right: "20px"
+            right: "20px",
+            top: 30
           }}
           onClick={this.showPlayerDrawer}
         />
         <Drawer
-          title="Ny score"
+          title="REGISTRER NY SCORE"
           placement={"bottom"}
           closable={true}
           onClose={this.onCloseScore}
@@ -67,7 +69,7 @@ class ActionsDrawer extends React.Component {
           <ScoreForm onSubmit={this.onCloseScore} />
         </Drawer>
         <Drawer
-          title="Ny spiller"
+          title="REGISTRER NY SPILLER"
           placement={"bottom"}
           closable={true}
           onClose={this.onClosePlayer}

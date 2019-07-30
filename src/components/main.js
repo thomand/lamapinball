@@ -22,6 +22,7 @@ class Main extends React.Component {
             height: "100px"
           }}
         >
+          <ActionsDrawer />
           <div className="logo" />
         </Header>
         <Content
@@ -43,7 +44,7 @@ class Main extends React.Component {
             <MachinesCard />
           </div>
         </Content>
-        <Footer
+        {/* <Footer
           style={{
             textAlign: "center",
             bottom: 0,
@@ -55,7 +56,7 @@ class Main extends React.Component {
           }}
         >
           <ActionsDrawer />
-        </Footer>
+        </Footer> */}
       </Layout>
     );
   }
