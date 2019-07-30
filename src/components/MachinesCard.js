@@ -4,7 +4,6 @@ import Machine from "./Machine";
 import NewestScores from "./newestScores";
 import goldeneye from "../assets/goldeneye.png";
 import hook from "../assets/hook.png";
-import ActionsDrawer from "./ActionsDrawer";
 
 const tabListNoTitle = [
   {
@@ -25,8 +24,7 @@ class MachinesCard extends React.Component {
   state = {
     key: "goldenEye",
     noTitleKey: "goldenEye",
-    spinning: true,
-    refreshScores: false
+    spinning: true
   };
 
   contentListNoTitle = {
@@ -57,10 +55,6 @@ class MachinesCard extends React.Component {
     this.setState({ spinning: false, refreshScores: false });
   }
 
-  refreshScores = () => {
-    this.setState({ refreshScores: true });
-  };
-
   render() {
     return (
       <div>
@@ -79,7 +73,6 @@ class MachinesCard extends React.Component {
           spinning={this.state.spinning}
           indicator={<Icon type="loading" style={{ fontSize: 36 }} spin />}
         />
-        <ActionsDrawer refresh={this.refreshScores} />
       </div>
     );
   }

@@ -2,8 +2,9 @@ import React from "react";
 import { Layout } from "antd";
 import MachinesCard from "./MachinesCard";
 import { init as firebaseInit } from "../firebase/firebase";
+import ActionsDrawer from "./ActionsDrawer";
 
-const { Header, Content } = Layout;
+const { Header, Content, Footer } = Layout;
 
 class Main extends React.Component {
   constructor(props) {
@@ -16,14 +17,20 @@ class Main extends React.Component {
         <Header
           style={{
             position: "fixed",
-            zIndex: 1,
+            zIndex: 100,
             width: "100%",
             height: "100px"
           }}
         >
           <div className="logo" />
         </Header>
-        <Content style={{ padding: "0 5px", marginTop: 64 }}>
+        <Content
+          style={{
+            padding: "0 5px",
+            marginTop: 64,
+            overflow: "hidden"
+          }}
+        >
           <div
             style={{
               background: "#fff",
@@ -36,6 +43,19 @@ class Main extends React.Component {
             <MachinesCard />
           </div>
         </Content>
+        <Footer
+          style={{
+            textAlign: "center",
+            bottom: 0,
+            height: "64px",
+            position: "sticky",
+            backgroundColor: "#00152a",
+            width: "100%",
+            color: "#ffffff"
+          }}
+        >
+          <ActionsDrawer />
+        </Footer>
       </Layout>
     );
   }

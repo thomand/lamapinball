@@ -18,7 +18,7 @@ export const getscores = machine => {
   return database
     .ref("/scores/" + machine)
     .orderByChild("score")
-    .limitToLast(5);
+    .limitToLast(10);
 };
 
 export const getplayersDB = sectionId => {

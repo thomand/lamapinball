@@ -1,11 +1,12 @@
 import React from "react";
-import { Row, List } from "antd";
+import { Row, List, Avatar, Skeleton } from "antd";
 import { getscores } from "../firebase/firebase";
 import { parseScore, sortArrayByScores } from "./helpers/scoreHelper";
 
 class Machine extends React.Component {
   state = {
-    scores: []
+    scores: [],
+    machineLoading: true
   };
 
   componentWillMount() {
@@ -13,6 +14,7 @@ class Machine extends React.Component {
   }
 
   updateScores() {
+    this.setState({ machineLoading: true });
     let scoresArray = [];
     getscores(this.props.name).on("value", snapshot => {
       let scores = snapshot.val();
@@ -20,6 +22,7 @@ class Machine extends React.Component {
       const sortedArray = sortArrayByScores(scoresArray);
       this.setState({ scores: sortedArray });
       this.props.dataLoaded();
+      this.setState({ machineLoading: false });
     });
   }
 
@@ -45,11 +48,27 @@ class Machine extends React.Component {
           dataSource={this.state.scores}
           renderItem={item => (
             <List.Item>
-              <List.Item.Meta
-                key={item.key}
-                title={<p>{item.player}</p>}
-                description={parseScore(item.score)}
-              />
+              <Skeleton avatar loading={this.state.machineLoading} active>
+                <List.Item.Meta
+                  key={item.key}
+                  avatar={
+                    <Avatar
+                      shape={"square"}
+                      style={{
+                        backgroundColor: "#00152a",
+                        color: "#ffffff",
+                        verticalAlign: "middle",
+                        marginTop: "10px"
+                      }}
+                      size="large"
+                    >
+                      {this.state.scores.indexOf(item) + 1}
+                    </Avatar>
+                  }
+                  title={<p>{item.player}</p>}
+                  description={parseScore(item.score)}
+                />
+              </Skeleton>
             </List.Item>
           )}
         />
