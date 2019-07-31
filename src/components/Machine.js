@@ -1,7 +1,7 @@
 import React from "react";
 import { Row, List, Avatar, Skeleton } from "antd";
 import { getscores } from "../firebase/firebase";
-import { parseScore, sortArrayByScores } from "./helpers/scoreHelper";
+import { parseScore, sortArrayByScores } from "../helpers/scoreHelper";
 
 class Machine extends React.Component {
   state = {
@@ -18,9 +18,11 @@ class Machine extends React.Component {
     let scoresArray = [];
     getscores(this.props.name).on("value", snapshot => {
       let scores = snapshot.val();
-      scoresArray = Object.values(scores);
-      const sortedArray = sortArrayByScores(scoresArray);
-      this.setState({ scores: sortedArray });
+      if (scores !== null && scores !== undefined) {
+        scoresArray = Object.values(scores);
+        const sortedArray = sortArrayByScores(scoresArray);
+        this.setState({ scores: sortedArray });
+      }
       this.props.dataLoaded();
       this.setState({ machineLoading: false });
     });

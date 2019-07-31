@@ -3,7 +3,8 @@ import { Button, message, Row, Col } from "antd";
 import goldeneyeImg from "../assets/goldeneye.png";
 import hookImg from "../assets/hook.png";
 import { deleteScore } from "../firebase/firebase";
-import { parseScore } from "./helpers/scoreHelper";
+import { parseScore } from "../helpers/scoreHelper";
+import { timeDifference } from "../helpers/timeHelper";
 
 class DeleteScoreForm extends React.Component {
   state = {
@@ -12,7 +13,6 @@ class DeleteScoreForm extends React.Component {
 
   deleteScore = item => {
     this.setState({ spinning: true });
-    console.log("Den er i sletting handleSubmit", item);
 
     deleteScore(item)
       .then(res => {
@@ -42,10 +42,13 @@ class DeleteScoreForm extends React.Component {
           <Col span={12} offset={2}>
             <h3>{this.props.item.player}</h3>
             <h4>{parseScore(this.props.item.score)}</h4>
+            <h4 style={{ fontWeight: "lighter", color: "#444" }}>
+              {timeDifference(this.props.item.timestamp)}
+            </h4>
           </Col>
         </Row>
         <Button
-          type="primary"
+          type="danger"
           htmlType="submit"
           className="delete-score-button"
           loading={this.state.spinning}

@@ -5,8 +5,9 @@ import goldeneyeImg from "../assets/goldeneye.png";
 import hookImg from "../assets/hook.png";
 import { Row, Col, Button } from "antd";
 import DeleteScoreDrawer from "./DeleteScoreDrawer";
-import parseScore from "./helpers/scoreHelper";
+import parseScore from "../helpers/scoreHelper";
 import UpdateScoreDrawer from "./UpdateScoreDrawer";
+import { timeDifference } from "../helpers/timeHelper";
 
 class NewestScores extends React.Component {
   state = {
@@ -45,49 +46,6 @@ class NewestScores extends React.Component {
     return scores.sort((a, b) =>
       parseInt(b.timestamp) > parseInt(a.timestamp) ? 1 : -1
     );
-  }
-
-  timeDifference(previous) {
-    const current = new Date().getTime();
-    const msPerMinute = 60 * 1000;
-    const msPerHour = msPerMinute * 60;
-    const msPerDay = msPerHour * 24;
-    const msPerMonth = msPerDay * 30;
-    const msPerYear = msPerDay * 365;
-
-    const elapsed = current - previous;
-
-    if (elapsed < msPerMinute) {
-      return Math.round(elapsed / 1000) + " sekunder siden";
-    } else if (elapsed < msPerHour) {
-      return (
-        Math.round(elapsed / msPerMinute) +
-        (Math.round(elapsed / msPerMinute) === 1 ? " minutt" : " minutter") +
-        " siden"
-      );
-    } else if (elapsed < msPerDay) {
-      return (
-        Math.round(elapsed / msPerHour) +
-        (Math.round(elapsed / msPerHour) === 1 ? " time" : " timer") +
-        " siden"
-      );
-    } else if (elapsed < msPerMonth) {
-      return (
-        "ca " +
-        Math.round(elapsed / msPerDay) +
-        (Math.round(elapsed / msPerDay) === 1 ? " dag" : " dager") +
-        " siden"
-      );
-    } else if (elapsed < msPerYear) {
-      return (
-        "ca " +
-        Math.round(elapsed / msPerMonth) +
-        (Math.round(elapsed / msPerMonth) === 1 ? " måned" : " måneder") +
-        " siden"
-      );
-    } else {
-      return "ca " + Math.round(elapsed / msPerYear) + " år siden";
-    }
   }
 
   deleteClicked(item) {
@@ -140,7 +98,7 @@ class NewestScores extends React.Component {
                         <p>{parseScore(item.score)}</p>
                       </div>
                     }
-                    description={this.timeDifference(item.timestamp)}
+                    description={timeDifference(item.timestamp)}
                   />
                   <div style={{ marginTop: "10px" }}>
                     <Button

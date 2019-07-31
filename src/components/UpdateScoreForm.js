@@ -3,7 +3,7 @@ import { Button, message, Row, Col, Form, Input } from "antd";
 import goldeneyeImg from "../assets/goldeneye.png";
 import hookImg from "../assets/hook.png";
 import { updateScore } from "../firebase/firebase";
-import { parseScore } from "./helpers/scoreHelper";
+import { parseScore } from "../helpers/scoreHelper";
 
 class UpdateScoreForm extends React.Component {
   state = {

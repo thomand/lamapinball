@@ -20,7 +20,7 @@ const tabListNoTitle = [
   }
 ];
 
-class MachinesCard extends React.Component {
+class MachinesCardContainer extends React.Component {
   state = {
     key: "goldenEye",
     noTitleKey: "goldenEye",
@@ -78,4 +78,4 @@ class MachinesCard extends React.Component {
   }
 }
 
-export default MachinesCard;
+export default MachinesCardContainer;

@@ -12,7 +12,7 @@ class DeleteScoreDrawer extends React.Component {
           closable={true}
           onClose={this.props.onCloseDelete}
           visible={this.props.visible}
-          height={"30%"}
+          height={"40%"}
           destroyOnClose={true}
         >
           <DeleteScoreForm

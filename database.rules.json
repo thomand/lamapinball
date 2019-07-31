@@ -1,6 +1,14 @@
 {
   "rules": {
     ".read": "true",
-    ".write": "true"
+    ".write": "true",
+    "scores": {
+      "goldeneye": {
+        ".indexOn": ["score", "dateAdded"]
+      },
+      "hook": {
+        ".indexOn": ["score", "dateAdded"]
+      }
+    }
   }
 }

@@ -1,11 +1,13 @@
 import React from "react";
 import { Form, Input, Button, Select, Spin, Icon, message } from "antd";
 import { getPlayers, addScore } from "../firebase/firebase";
-import { parseScore } from "./helpers/scoreHelper";
+import { parseScore } from "../helpers/scoreHelper";
+import { sortPlayersByName } from "../helpers/playerHelper";
 
 class ScoreForm extends React.Component {
   state = {
     players: [],
+    player: null,
     spinning: false,
     machines: [
       { name: "Golden Eye", key: "goldeneye", id: 1 },
@@ -17,12 +19,21 @@ class ScoreForm extends React.Component {
     getPlayers()
       .then(res => {
         let playersObj = res.val();
-        let players = Object.values(playersObj);
-        this.setState({ players });
+        let players = sortPlayersByName(Object.values(playersObj));
+        this.setState({
+          players,
+          player: localStorage.getItem("player") || players[0].name || ""
+        });
       })
       .catch(error => {
         message.error("Kunne ikke hente spillere");
       });
+  }
+
+  savePlayerToLocalStorage(player) {
+    console.log("Attempting to save ", player);
+    localStorage.setItem("player", player);
+    console.log("saved ", localStorage.getItem("player"));
   }
 
   handleSubmit = e => {
@@ -36,6 +47,7 @@ class ScoreForm extends React.Component {
             .key,
           score: parseInt(values.score)
         };
+        this.savePlayerToLocalStorage(scoreObject.player);
         addScore(scoreObject)
           .then(success => {
             message.success("Score lagret!");
@@ -82,7 +94,8 @@ class ScoreForm extends React.Component {
           </Form.Item>
           <Form.Item>
             {getFieldDecorator("player", {
-              rules: [{ required: true, message: "Vennligst velg spiller!" }]
+              rules: [{ required: true, message: "Vennligst velg spiller!" }],
+              initialValue: this.state.player
             })(
               <Select placeholder="Spiller">
                 {this.state.players.map(player => (

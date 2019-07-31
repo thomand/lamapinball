@@ -1,16 +1,11 @@
 import React from "react";
 import { Layout } from "antd";
-import MachinesCard from "./MachinesCard";
-import { init as firebaseInit } from "../firebase/firebase";
+import MachinesCardContainer from "./MachinesCardContainer";
 import ActionsDrawer from "./ActionsDrawer";
 
-const { Header, Content, Footer } = Layout;
+const { Header, Content } = Layout;
 
 class Main extends React.Component {
-  constructor(props) {
-    super(props);
-    firebaseInit();
-  }
   render() {
     return (
       <Layout>
@@ -41,22 +36,9 @@ class Main extends React.Component {
               marginTop: 30
             }}
           >
-            <MachinesCard />
+            <MachinesCardContainer />
           </div>
         </Content>
-        {/* <Footer
-          style={{
-            textAlign: "center",
-            bottom: 0,
-            height: "64px",
-            position: "sticky",
-            backgroundColor: "#00152a",
-            width: "100%",
-            color: "#ffffff"
-          }}
-        >
-          <ActionsDrawer />
-        </Footer> */}
       </Layout>
     );
   }
