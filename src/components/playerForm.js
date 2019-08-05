@@ -1,30 +1,59 @@
-import React from "react";
+import React from 'react';
 
-import { Form, Input, Button, message, Spin, Icon } from "antd";
+import { Form, Input, Button, message, Spin, Icon } from 'antd';
 
-import { addPlayer } from "../firebase/firebase";
+import { addPlayer, getPlayers } from '../firebase/firebase';
 
 class PlayerForm extends React.Component {
   state = {
-    spinning: false
+    spinning: false,
+    players: []
   };
+
+  componentDidMount() {
+    getPlayers().then(x => {
+      let playersObj = x.val();
+      let playerNames = [];
+      for (const key in playersObj) {
+        if (playersObj.hasOwnProperty(key)) {
+          const playerName = playersObj[key].name.toLowerCase();
+          playerNames.push(playerName);
+        }
+      }
+      this.setState({ players: playerNames });
+    });
+  }
+
+  checkIfUsernameIsTaken(name) {
+    return this.state.players.includes(name.toLowerCase());
+  }
 
   handleSubmit = e => {
     this.setState({ spinning: true });
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log("Received values of form: ", values);
+        const usernameTaken = this.checkIfUsernameIsTaken(values.name);
+        if (usernameTaken) {
+          this.props.form.setFields({
+            name: {
+              value: values.name,
+              errors: [new Error('Brukernavnet eksisterer allerede')]
+            }
+          });
+          this.setState({ spinning: false });
+          return;
+        }
         //send data to api and await response.
         //show spinner while waiting
         //after callback call onSumbit function
         addPlayer(values.name)
           .then(res => {
-            message.success("Spiller lagt til!");
+            message.success('Spiller lagt til!');
             this.props.onSubmit();
           })
           .catch(error => {
-            message.error("Noe gikk galt under lagring av spiller!");
+            message.error('Noe gikk galt under lagring av spiller!');
           })
           .finally(x => {
             this.setState({ spinning: false });
@@ -35,8 +64,8 @@ class PlayerForm extends React.Component {
 
   nameFieldIsEmpty() {
     return (
-      this.props.form.getFieldValue("name") === undefined ||
-      this.props.form.getFieldValue("name").length === 0
+      this.props.form.getFieldValue('name') === undefined ||
+      this.props.form.getFieldValue('name').length === 0
     );
   }
 
@@ -46,8 +75,13 @@ class PlayerForm extends React.Component {
       <div>
         <Form onSubmit={this.handleSubmit} className="player-form">
           <Form.Item>
-            {getFieldDecorator("name", {
-              rules: [{ required: true, message: "Vennligst skriv inn navn!" }]
+            {getFieldDecorator('name', {
+              rules: [
+                {
+                  required: true,
+                  message: 'Vennligst skriv inn navn!'
+                }
+              ]
             })(<Input type="text" placeholder="Navn" />)}
           </Form.Item>
           <Form.Item>
@@ -70,7 +104,7 @@ class PlayerForm extends React.Component {
   }
 }
 
-const WrappedPlayerForm = Form.create({ name: "player_registration" })(
+const WrappedPlayerForm = Form.create({ name: 'player_registration' })(
   PlayerForm
 );
 
