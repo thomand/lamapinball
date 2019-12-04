@@ -1,10 +1,11 @@
-import React from "react";
-import { Button, message, Row, Col } from "antd";
-import goldeneyeImg from "../assets/goldeneye.png";
-import hookImg from "../assets/hook.png";
-import { deleteScore } from "../firebase/firebase";
-import { parseScore } from "../helpers/scoreHelper";
-import { timeDifference } from "../helpers/timeHelper";
+import React from 'react';
+import { Button, message, Row, Col } from 'antd';
+import goldeneyeImg from '../assets/goldeneye.png';
+import hookImg from '../assets/hook.png';
+import tommyImg from '../assets/tommy.jpg';
+import { deleteScore } from '../firebase/firebase';
+import { parseScore } from '../helpers/scoreHelper';
+import { timeDifference } from '../helpers/timeHelper';
 
 class DeleteScoreForm extends React.Component {
   state = {
@@ -16,44 +17,44 @@ class DeleteScoreForm extends React.Component {
 
     deleteScore(item)
       .then(res => {
-        message.success("Score slettet!");
+        message.success('Score slettet!');
         this.props.onDeleted();
       })
       .catch(error => {
-        message.error("Noe gikk galt under sletting av score!");
+        message.error('Noe gikk galt under sletting av score!');
       })
       .finally(x => {
         this.setState({ spinning: false });
       });
   };
 
+  getMachineImage() {
+    switch (this.props.item.machine) {
+      case 'hook':
+        return hookImg;
+      case 'goldeneye':
+        return goldeneyeImg;
+      case 'tommy':
+        return tommyImg;
+      default:
+        return undefined;
+    }
+  }
+
   render() {
     return (
       <div>
-        <Row style={{ marginBottom: "10px" }}>
+        <Row style={{ marginBottom: '10px' }}>
           <Col span={8}>
-            <img
-              width={"100%"}
-              height={"80px"}
-              alt="maskin"
-              src={this.props.item.machine === "hook" ? hookImg : goldeneyeImg}
-            />
+            <img width={'100%'} height={'80px'} alt="maskin" src={this.getMachineImage()} />
           </Col>
           <Col span={12} offset={2}>
             <h3>{this.props.item.player}</h3>
             <h4>{parseScore(this.props.item.score)}</h4>
-            <h4 style={{ fontWeight: "lighter", color: "#444" }}>
-              {timeDifference(this.props.item.timestamp)}
-            </h4>
+            <h4 style={{ fontWeight: 'lighter', color: '#444' }}>{timeDifference(this.props.item.timestamp)}</h4>
           </Col>
         </Row>
-        <Button
-          type="danger"
-          htmlType="submit"
-          className="delete-score-button"
-          loading={this.state.spinning}
-          onClick={this.deleteScore.bind(this, this.props.item)}
-        >
+        <Button type="danger" htmlType="submit" className="delete-score-button" loading={this.state.spinning} onClick={this.deleteScore.bind(this, this.props.item)}>
           Slett
         </Button>
       </div>

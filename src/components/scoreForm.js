@@ -1,8 +1,8 @@
-import React from "react";
-import { Form, Input, Button, Select, Spin, Icon, message } from "antd";
-import { getPlayers, addScore } from "../firebase/firebase";
-import { parseScore } from "../helpers/scoreHelper";
-import { sortPlayersByName } from "../helpers/playerHelper";
+import React from 'react';
+import { Form, Input, Button, Select, Spin, Icon, message } from 'antd';
+import { getPlayers, addScore } from '../firebase/firebase';
+import { parseScore } from '../helpers/scoreHelper';
+import { sortPlayersByName } from '../helpers/playerHelper';
 
 class ScoreForm extends React.Component {
   state = {
@@ -10,8 +10,9 @@ class ScoreForm extends React.Component {
     player: null,
     spinning: false,
     machines: [
-      { name: "Golden Eye", key: "goldeneye", id: 1 },
-      { name: "Hook", key: "hook", id: 2 }
+      { name: 'Golden Eye', key: 'goldeneye', id: 1 },
+      { name: 'Hook', key: 'hook', id: 2 },
+      { name: 'Tommy', key: 'tommy', id: 3 }
     ]
   };
 
@@ -22,18 +23,18 @@ class ScoreForm extends React.Component {
         let players = sortPlayersByName(Object.values(playersObj));
         this.setState({
           players,
-          player: localStorage.getItem("player") || players[0].name || ""
+          player: localStorage.getItem('player') || players[0].name || ''
         });
       })
-      .catch(error => {
-        message.error("Kunne ikke hente spillere");
+      .catch(() => {
+        message.error('Kunne ikke hente spillere');
       });
   }
 
   savePlayerToLocalStorage(player) {
-    console.log("Attempting to save ", player);
-    localStorage.setItem("player", player);
-    console.log("saved ", localStorage.getItem("player"));
+    console.log('Attempting to save ', player);
+    localStorage.setItem('player', player);
+    console.log('saved ', localStorage.getItem('player'));
   }
 
   handleSubmit = e => {
@@ -43,18 +44,17 @@ class ScoreForm extends React.Component {
       if (!err) {
         let scoreObject = {
           player: values.player,
-          machine: this.state.machines.filter(x => x.name === values.machine)[0]
-            .key,
+          machine: this.state.machines.filter(x => x.name === values.machine)[0].key,
           score: parseInt(values.score)
         };
         this.savePlayerToLocalStorage(scoreObject.player);
         addScore(scoreObject)
           .then(success => {
-            message.success("Score lagret!");
+            message.success('Score lagret!');
             this.props.onSubmit();
           })
           .error(error => {
-            message.error("Noe gikk galt under lagring av score!");
+            message.error('Noe gikk galt under lagring av score!');
           })
           .finally(x => {
             this.setState({ spinning: false });
@@ -65,11 +65,9 @@ class ScoreForm extends React.Component {
   };
 
   formIsValid() {
-    const score =
-      this.props.form.getFieldValue("score") !== undefined &&
-      this.props.form.getFieldValue("score").length > 0;
-    const machine = this.props.form.getFieldValue("machine") !== undefined;
-    const player = this.props.form.getFieldValue("player") !== undefined;
+    const score = this.props.form.getFieldValue('score') !== undefined && this.props.form.getFieldValue('score').length > 0;
+    const machine = this.props.form.getFieldValue('machine') !== undefined;
+    const player = this.props.form.getFieldValue('player') !== undefined;
     return score & machine & player;
   }
 
@@ -78,10 +76,10 @@ class ScoreForm extends React.Component {
     return (
       <div>
         <Form onSubmit={this.handleSubmit} className="score-form">
-          <h2>Score: {parseScore(this.props.form.getFieldValue("score"))}</h2>
+          <h2>Score: {parseScore(this.props.form.getFieldValue('score'))}</h2>
           <Form.Item>
-            {getFieldDecorator("machine", {
-              rules: [{ required: true, message: "Vennligst velg maskin!" }]
+            {getFieldDecorator('machine', {
+              rules: [{ required: true, message: 'Vennligst velg maskin!' }]
             })(
               <Select placeholder="Maskin">
                 {this.state.machines.map(machine => (
@@ -93,8 +91,8 @@ class ScoreForm extends React.Component {
             )}
           </Form.Item>
           <Form.Item>
-            {getFieldDecorator("player", {
-              rules: [{ required: true, message: "Vennligst velg spiller!" }],
+            {getFieldDecorator('player', {
+              rules: [{ required: true, message: 'Vennligst velg spiller!' }],
               initialValue: this.state.player
             })(
               <Select placeholder="Spiller">
@@ -107,30 +105,22 @@ class ScoreForm extends React.Component {
             )}
           </Form.Item>
           <Form.Item>
-            {getFieldDecorator("score", {
-              rules: [{ required: true, message: "Vennligst skriv inn score!" }]
+            {getFieldDecorator('score', {
+              rules: [{ required: true, message: 'Vennligst skriv inn score!' }]
             })(<Input type="number" placeholder="Score" pattern="\d*" />)}
           </Form.Item>
           <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              className="score-reg-button"
-              disabled={!this.formIsValid()}
-            >
+            <Button type="primary" htmlType="submit" className="score-reg-button" disabled={!this.formIsValid()}>
               Registrer
             </Button>
           </Form.Item>
         </Form>
-        <Spin
-          spinning={this.state.spinning}
-          indicator={<Icon type="loading" style={{ fontSize: 36 }} spin />}
-        />
+        <Spin spinning={this.state.spinning} indicator={<Icon type="loading" style={{ fontSize: 36 }} spin />} />
       </div>
     );
   }
 }
 
-const WrappedScoreForm = Form.create({ name: "score_registration" })(ScoreForm);
+const WrappedScoreForm = Form.create({ name: 'score_registration' })(ScoreForm);
 
 export default WrappedScoreForm;
