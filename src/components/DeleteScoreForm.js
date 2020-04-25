@@ -3,6 +3,7 @@ import { Button, message, Row, Col } from 'antd';
 import goldeneyeImg from '../assets/goldeneye.png';
 import hookImg from '../assets/hook.png';
 import tommyImg from '../assets/tommy.jpg';
+import scaredImg from '../assets/scaredStiff.png';
 import { deleteScore } from '../firebase/firebase';
 import { parseScore } from '../helpers/scoreHelper';
 import { timeDifference } from '../helpers/timeHelper';
@@ -36,6 +37,8 @@ class DeleteScoreForm extends React.Component {
         return goldeneyeImg;
       case 'tommy':
         return tommyImg;
+      case 'scaredStiff':
+        return scaredImg;
       default:
         return undefined;
     }

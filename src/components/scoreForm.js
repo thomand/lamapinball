@@ -12,7 +12,8 @@ class ScoreForm extends React.Component {
     machines: [
       { name: 'Golden Eye', key: 'goldeneye', id: 1 },
       { name: 'Hook', key: 'hook', id: 2 },
-      { name: 'Tommy', key: 'tommy', id: 3 }
+      { name: 'Tommy', key: 'tommy', id: 3 },
+      { name: 'Scared Stiff', key: 'scaredStiff', id: 4 }
     ]
   };
 

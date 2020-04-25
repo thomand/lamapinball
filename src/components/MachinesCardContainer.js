@@ -5,6 +5,7 @@ import NewestScores from './newestScores';
 import goldeneye from '../assets/goldeneye.png';
 import hook from '../assets/hook.png';
 import tommy from '../assets/tommy.jpg';
+import scared from '../assets/scaredStiff.png';
 
 const tabListNoTitle = [
   {
@@ -14,6 +15,10 @@ const tabListNoTitle = [
   {
     key: 'tommy',
     tab: 'Tommy'
+  },
+  {
+    key: 'scaredStiff',
+    tab: 'Scared Stiff'
   },
   {
     key: 'hook',
@@ -36,6 +41,7 @@ class MachinesCardContainer extends React.Component {
     goldenEye: <Machine key={'goldeneye'} name={'goldeneye'} dataLoaded={this.dataLoaded.bind(this)} image={goldeneye} />,
     hook: <Machine key={'hook'} name={'hook'} dataLoaded={this.dataLoaded.bind(this)} image={hook} />,
     tommy: <Machine key={'tommy'} name={'tommy'} dataLoaded={this.dataLoaded.bind(this)} image={tommy} />,
+    scaredStiff: <Machine key={'scaredStiff'} name={'scaredStiff'} dataLoaded={this.dataLoaded.bind(this)} image={scared} />,
     nyeste: <NewestScores dataLoaded={this.dataLoaded.bind(this)} />
   };
 

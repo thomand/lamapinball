@@ -62,6 +62,15 @@ export const getNewestTommy = () => {
     .once('value');
 };
 
+export const getNewestScaredStiff = () => {
+  return database
+    .ref('scores')
+    .child('scaredStiff')
+    .orderByChild('dateAdded')
+    .limitToLast(5)
+    .once('value');
+};
+
 export const addScore = scoreObject => {
   let key = database.ref('scores/' + scoreObject.machine).push().key;
   let model = scoreModel(key, scoreObject.player, scoreObject.machine, scoreObject.score, new Date().getTime());
