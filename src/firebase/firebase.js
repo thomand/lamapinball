@@ -3,6 +3,7 @@ import 'firebase/database';
 import config from './firebaseconfig';
 import scoreModel from '../models/score';
 import playerModel from '../models/player';
+import beerModel from '../models/beer';
 let database;
 
 export const init = () => {
@@ -75,6 +76,12 @@ export const addScore = scoreObject => {
   let key = database.ref('scores/' + scoreObject.machine).push().key;
   let model = scoreModel(key, scoreObject.player, scoreObject.machine, scoreObject.score, new Date().getTime());
   return database.ref('/scores/' + model.machine + '/' + key).set(model);
+};
+
+export const addBeer = beerObject => {
+  let key = database.ref('beers/' + beerObject.player).push().key;
+  let model = beerModel(key, beerObject.player, beerObject.beer, beerObject.amount, new Date().getTime());
+  return database.ref('/beers/' + model.player + '/' + key).set(model);
 };
 
 export const deleteScore = item => {

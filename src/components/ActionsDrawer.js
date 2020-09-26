@@ -1,11 +1,12 @@
 import React from "react";
 
-import { Drawer, Icon } from "antd";
+import { Drawer, Icon, Button } from "antd";
 import ScoreForm from "./scoreForm";
 import PlayerForm from "./playerForm";
+import BeerForm from './beerForm';
 
 class ActionsDrawer extends React.Component {
-  state = { scoreVisible: false, playerVisable: false };
+  state = { scoreVisible: false, playerVisable: false, beerVisible: false };
 
   showScoreDrawer = () => {
     this.setState({
@@ -28,6 +29,17 @@ class ActionsDrawer extends React.Component {
   onClosePlayer = () => {
     this.setState({
       playerVisable: false
+    });
+  };
+  showBeerDrawer = () => {
+    this.setState({
+      beerVisable: true
+    });
+  };
+
+  onCloseBeer = () => {
+    this.setState({
+      beerVisable: false
     });
   };
 
@@ -57,6 +69,16 @@ class ActionsDrawer extends React.Component {
           }}
           onClick={this.showPlayerDrawer}
         />
+      <div style={{height: '40px', position: 'absolute', margin: '0 auto', left: '25%',
+              top: '90px', }}>
+          <Button style={{
+              fontSize: "20px",
+              backgroundColor: '#001529',
+              color: '#fff',
+            }} onClick={this.showBeerDrawer}>
+          Registrer pils 🍺 
+          </Button>
+        </div>
         <Drawer
           title="REGISTRER NY SCORE"
           placement={"bottom"}
@@ -77,6 +99,16 @@ class ActionsDrawer extends React.Component {
           destroyOnClose={true}
         >
           <PlayerForm onSubmit={this.onClosePlayer} />
+        </Drawer>
+        <Drawer
+          title="REGISTRER NY PILS"
+          placement={"bottom"}
+          closable={true}
+          onClose={this.onCloseBeer}
+          visible={this.state.beerVisable}
+          destroyOnClose={true}
+        >
+          <BeerForm onSubmit={this.onCloseBeer} />
         </Drawer>
       </div>
     );

@@ -8,7 +8,7 @@ const { Header, Content } = Layout;
 class Main extends React.Component {
   render() {
     return (
-      <Layout>
+      <Layout style={{backgroundColor: '#001529'}}>
         <Header
           style={{
             position: "fixed",
@@ -23,8 +23,9 @@ class Main extends React.Component {
         <Content
           style={{
             padding: "0 5px",
-            marginTop: 64,
-            overflow: "hidden"
+            marginTop: 120,
+            overflow: "hidden",
+            backgroundColor: '#001529',
           }}
         >
           <div
