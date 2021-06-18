@@ -72,6 +72,33 @@ export const getNewestScaredStiff = () => {
     .once('value');
 };
 
+export const getNewestTheatre = () => {
+  return database
+    .ref('scores')
+    .child('theatreOfMagic')
+    .orderByChild('dateAdded')
+    .limitToLast(5)
+    .once('value');
+};
+
+export const getNewestRoadshow = () => {
+  return database
+    .ref('scores')
+    .child('roadshow')
+    .orderByChild('dateAdded')
+    .limitToLast(5)
+    .once('value');
+};
+
+export const getNewestWaterworld = () => {
+  return database
+    .ref('scores')
+    .child('waterworld')
+    .orderByChild('dateAdded')
+    .limitToLast(5)
+    .once('value');
+};
+
 export const addScore = scoreObject => {
   let key = database.ref('scores/' + scoreObject.machine).push().key;
   let model = scoreModel(key, scoreObject.player, scoreObject.machine, scoreObject.score, new Date().getTime());

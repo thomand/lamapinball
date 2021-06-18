@@ -1,10 +1,13 @@
 import React from 'react';
 import { List } from 'antd';
-import { getNewestHook, getNewestGoldenEye, getNewestTommy, getNewestScaredStiff } from '../firebase/firebase';
+import { getNewestHook, getNewestGoldenEye, getNewestTommy, getNewestScaredStiff, getNewestTheatre, getNewestRoadshow, getNewestWaterworld } from '../firebase/firebase';
 import goldeneyeImg from '../assets/goldeneye.png';
 import hookImg from '../assets/hook.png';
 import tommyImg from '../assets/tommy.jpg';
 import scaredStiffImg from '../assets/scaredStiff.png'
+import theatreImg from '../assets/tom_bg.jpg';
+import roadshowImg from '../assets/roadshow.jpeg';
+import waterworldImg from '../assets/waterworld.jpeg';
 import { Row, Col, Button } from 'antd';
 import DeleteScoreDrawer from './DeleteScoreDrawer';
 import parseScore from '../helpers/scoreHelper';
@@ -43,6 +46,30 @@ class NewestScores extends React.Component {
         getNewestScaredStiff().then(scaredStiff => {
           scaredStiff.forEach(tChild => {
             tChild.image = scaredStiffImg;
+            scoresArray.push(tChild.val());
+          });
+        });
+      })
+      .then(() => {
+        getNewestTheatre().then(theatre => {
+          theatre.forEach(tChild => {
+            tChild.image = theatreImg;
+            scoresArray.push(tChild.val());
+          });
+        });
+      })
+      .then(() => {
+        getNewestRoadshow().then(roadshow => {
+          roadshow.forEach(tChild => {
+            tChild.image = roadshowImg;
+            scoresArray.push(tChild.val());
+          });
+        });
+      })
+      .then(() => {
+        getNewestWaterworld().then(waterworld => {
+          waterworld.forEach(tChild => {
+            tChild.image = waterworldImg;
             scoresArray.push(tChild.val());
           });
         });
@@ -98,6 +125,12 @@ class NewestScores extends React.Component {
         return tommyImg;
       case 'scaredStiff':
         return scaredStiffImg;
+      case 'theatreOfMagic':
+        return theatreImg;
+      case 'roadshow':
+        return roadshowImg;
+      case 'waterworld':
+        return waterworldImg;
       default:
         return undefined;
     }

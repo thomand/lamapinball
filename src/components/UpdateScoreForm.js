@@ -4,6 +4,9 @@ import goldeneyeImg from '../assets/goldeneye.png';
 import hookImg from '../assets/hook.png';
 import tommyImg from '../assets/tommy.jpg';
 import scaredImg from '../assets/scaredStiff.png';
+import theatreImg from '../assets/tom_bg.jpg';
+import roadshowImg from '../assets/roadshow.jpeg';
+import waterworldImg from '../assets/waterworld.jpeg';
 import { updateScore } from '../firebase/firebase';
 import { parseScore } from '../helpers/scoreHelper';
 
@@ -45,6 +48,12 @@ class UpdateScoreForm extends React.Component {
         return tommyImg;
       case 'scaredStiff':
         return scaredImg;
+      case 'theatreOfMagic':
+        return theatreImg;
+      case 'roadshow':
+        return roadshowImg;
+      case 'waterworld':
+        return waterworldImg;
       default:
         return undefined;
     }
